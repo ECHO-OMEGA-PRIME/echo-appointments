@@ -139,7 +139,7 @@ async function isSlotAvailable(
 function requireAuth(env: Env) {
   return async (c: { req: { header: (k: string) => string | undefined }; json: (d: unknown, s: number) => Response }, next: () => Promise<void>) => {
     const key = c.req.header('X-Echo-API-Key');
-    const validKey = env.ECHO_API_KEY || 'echo-omega-prime-forge-x-2026';
+    const validKey = env.ECHO_API_KEY;
     if (!key || key !== validKey) {
       return c.json({ success: false, error: 'Unauthorized', timestamp: new Date().toISOString() }, 401);
     }
@@ -181,7 +181,7 @@ app.get('/status', async (c) => {
 
 app.post('/tenants', async (c) => {
   const key = c.req.header('X-Echo-API-Key');
-  const validKey = c.env.ECHO_API_KEY || 'echo-omega-prime-forge-x-2026';
+  const validKey = c.env.ECHO_API_KEY;
   if (!key || key !== validKey) return c.json({ success: false, error: 'Unauthorized' }, 401);
 
   const body = await c.req.json<Partial<Tenant>>();
@@ -222,7 +222,7 @@ app.get('/providers', async (c) => {
 
 app.post('/providers', async (c) => {
   const key = c.req.header('X-Echo-API-Key');
-  const validKey = c.env.ECHO_API_KEY || 'echo-omega-prime-forge-x-2026';
+  const validKey = c.env.ECHO_API_KEY;
   if (!key || key !== validKey) return c.json({ success: false, error: 'Unauthorized' }, 401);
 
   const body = await c.req.json<Partial<Provider>>();
@@ -247,7 +247,7 @@ app.get('/providers/:id', async (c) => {
 
 app.put('/providers/:id', async (c) => {
   const key = c.req.header('X-Echo-API-Key');
-  const validKey = c.env.ECHO_API_KEY || 'echo-omega-prime-forge-x-2026';
+  const validKey = c.env.ECHO_API_KEY;
   if (!key || key !== validKey) return c.json({ success: false, error: 'Unauthorized' }, 401);
 
   const body = await c.req.json<Partial<Provider>>();
@@ -265,7 +265,7 @@ app.put('/providers/:id', async (c) => {
 
 app.patch('/providers/:id/toggle', async (c) => {
   const key = c.req.header('X-Echo-API-Key');
-  const validKey = c.env.ECHO_API_KEY || 'echo-omega-prime-forge-x-2026';
+  const validKey = c.env.ECHO_API_KEY;
   if (!key || key !== validKey) return c.json({ success: false, error: 'Unauthorized' }, 401);
 
   const id = c.req.param('id');
@@ -288,7 +288,7 @@ app.get('/services', async (c) => {
 
 app.post('/services', async (c) => {
   const key = c.req.header('X-Echo-API-Key');
-  const validKey = c.env.ECHO_API_KEY || 'echo-omega-prime-forge-x-2026';
+  const validKey = c.env.ECHO_API_KEY;
   if (!key || key !== validKey) return c.json({ success: false, error: 'Unauthorized' }, 401);
 
   const body = await c.req.json<Partial<Service>>();
@@ -313,7 +313,7 @@ app.get('/services/:id', async (c) => {
 
 app.put('/services/:id', async (c) => {
   const key = c.req.header('X-Echo-API-Key');
-  const validKey = c.env.ECHO_API_KEY || 'echo-omega-prime-forge-x-2026';
+  const validKey = c.env.ECHO_API_KEY;
   if (!key || key !== validKey) return c.json({ success: false, error: 'Unauthorized' }, 401);
 
   const body = await c.req.json<Partial<Service>>();
@@ -331,7 +331,7 @@ app.put('/services/:id', async (c) => {
 
 app.patch('/services/:id/toggle', async (c) => {
   const key = c.req.header('X-Echo-API-Key');
-  const validKey = c.env.ECHO_API_KEY || 'echo-omega-prime-forge-x-2026';
+  const validKey = c.env.ECHO_API_KEY;
   if (!key || key !== validKey) return c.json({ success: false, error: 'Unauthorized' }, 401);
 
   const id = c.req.param('id');
@@ -355,7 +355,7 @@ app.get('/availability', async (c) => {
 // Bulk set availability for a provider (replaces all existing)
 app.post('/availability', async (c) => {
   const key = c.req.header('X-Echo-API-Key');
-  const validKey = c.env.ECHO_API_KEY || 'echo-omega-prime-forge-x-2026';
+  const validKey = c.env.ECHO_API_KEY;
   if (!key || key !== validKey) return c.json({ success: false, error: 'Unauthorized' }, 401);
 
   const body = await c.req.json<{ provider_id: string; schedule: Array<{ day_of_week: number; start_time: string; end_time: string; is_available?: number }> }>();
@@ -514,7 +514,7 @@ app.get('/appointments/:id', async (c) => {
 
 app.put('/appointments/:id', async (c) => {
   const key = c.req.header('X-Echo-API-Key');
-  const validKey = c.env.ECHO_API_KEY || 'echo-omega-prime-forge-x-2026';
+  const validKey = c.env.ECHO_API_KEY;
   if (!key || key !== validKey) return c.json({ success: false, error: 'Unauthorized' }, 401);
 
   const id = c.req.param('id');
@@ -577,7 +577,7 @@ app.post('/appointments/:id/no-show', async (c) => {
 
 app.post('/appointments/:id/reschedule', async (c) => {
   const key = c.req.header('X-Echo-API-Key');
-  const validKey = c.env.ECHO_API_KEY || 'echo-omega-prime-forge-x-2026';
+  const validKey = c.env.ECHO_API_KEY;
   if (!key || key !== validKey) return c.json({ success: false, error: 'Unauthorized' }, 401);
 
   const id = c.req.param('id');
@@ -627,7 +627,7 @@ app.post('/appointments/:id/analyze', async (c) => {
   try {
     const res = await c.env.ENGINE_RUNTIME.fetch('https://echo-engine-runtime.bmcii1976.workers.dev/execute', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Echo-API-Key': 'echo-omega-prime-forge-x-2026' },
+      headers: { 'Content-Type': 'application/json', 'X-Echo-API-Key': c.env.ECHO_API_KEY },
       body: JSON.stringify({
         engine: 'appointments-analyzer',
         prompt: `Analyze this appointment and predict no-show risk:
@@ -799,7 +799,7 @@ async function handleScheduled(env: Env): Promise<void> {
       // Try to send via email sender binding
       await env.EMAIL_SENDER.fetch('https://echo-email-sender.bmcii1976.workers.dev/send', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Echo-API-Key': 'echo-omega-prime-forge-x-2026' },
+        headers: { 'Content-Type': 'application/json', 'X-Echo-API-Key': env.ECHO_API_KEY },
         body: JSON.stringify({
           to: reminder.client_email,
           subject: `Reminder: Your appointment on ${reminder.start_time.split('T')[0]}`,
