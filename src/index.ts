@@ -156,6 +156,8 @@ app.use('*', logger());
 
 // ─── Health & Status ──────────────────────────────────────────────────────────
 
+app.get('/', (c) => c.json({ service: SERVICE, version: VERSION, status: 'operational' }));
+
 app.get('/health', (c) => {
   return c.json({ status: 'ok', service: SERVICE, version: VERSION, timestamp: new Date().toISOString() });
 });
